@@ -1,4 +1,8 @@
 let readLineSync=require('readline-sync');
+const { equal } = require('assert');
+const { PRIORITY_LOW } = require('constants');
+let fs=require('fs');
+const { exit, mainModule } = require('process');
 let rawinput=readLineSync.question();
 //console.log(rawinput);
 let formatedInput='';
@@ -17,51 +21,9 @@ for (let i=0;i<rawinput.length;i++)
         formatedInput=formatedInput+rawinput[i];
     }
 }
-//console.log(formatedInput);
-let i=0;
-let tmpStr='';
-while (i<formatedInput.length)
-{
-    //console.log(i,tmpStr);
-    if (formatedInput[i]!=' ')
-    {
-        tmpStr+=formatedInput[i];
-    }
-    else
-    {
-        if (tmpStr==''&&i!=0) {i++; continue;}
-        if (sym.includes(tmpStr))
-        {
-            //console.log('sym');
-            a.push(tmpStr);
-        }
-        else
-        {
-            if (tmpStr==parseFloat(tmpStr))
-            {
-                //console.log('number');
-                a.push(parseFloat(tmpStr));
-            }
-        }
-        tmpStr='';
-    }
-    i++;
-}
+a=formatedInput.split(' ');
+console.log(a);
 
-
-if (sym.includes(tmpStr))
-{
-    //console.log('sym');
-    a.push(tmpStr);
-}
-else
-{
-    if (tmpStr==parseFloat(tmpStr))
-    {
-        //console.log('number');
-        a.push(parseFloat(tmpStr));
-    }
-}
 
 
 let stack=[];
@@ -77,11 +39,11 @@ prior.set('-',3);
 //console.log(prior);
 for (i=0;i<a.length;i++)
 {
+    if (a[i]=='') {continue;}
     //console.log(i,stack,output);
     if (a[i]==parseFloat(a[i]))
     {
-        output.push(a[i]); 
-
+        output.push(parseFloat(a[i])); 
     }
     else
     {
@@ -167,6 +129,9 @@ for (i=0;i<output.length;i++)
     }
     stack.push(tmpFlt);
 }
+
+if (stack.length>1) {console.log('Wrong input'); exit();}
+if (stack[0]!=parseFloat(stack[0])) {console.log('Wrong input'); exit();}
 console.log(stack[0]);
 
 
